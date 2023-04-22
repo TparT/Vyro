@@ -1,0 +1,28 @@
+{
+  "jsonid" : "input_profile",
+  "controller_type": "vive_tracker_left_foot",
+  "device_class" : "TrackedDeviceClass_Controller",
+  "resource_root" : "imuFBT",
+  "driver_name" : "imuFBT",
+  "legacy_binding" :  "{imuFBT}/input/legacy_bindings_imuFBT.json",
+  "legacy_profile" :  "none",
+  "input_bindingui_mode" : "single_device",
+  "should_show_binding_errors": true,
+  "input_bindingui_left": 
+  {
+    "transform": "scale(-1,1)",
+    "image": "{imuFBT}/icons/tracker.svg"
+  },
+  "input_bindingui_right": 
+  {
+    "image": "{imuFBT}/icons/tracker.svg"
+  },
+  "priority" : 6,
+  "input_source" :
+  {
+    "/pose/raw" : {
+        "type" : "pose",
+        "binding_image_point" : [ 0, 0 ]
+    }
+  }
+}

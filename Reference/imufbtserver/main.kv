@@ -1,0 +1,1142 @@
+<TrackerView@BoxLayout>:
+    desc: ''
+    ac: ac
+    px: px
+    py: py
+    pz: pz
+    qx: qx
+    qy: qy
+    qz: qz
+    qw: qw
+    size_hint_y: 0.083
+
+    DefaultLabel:
+        size_hint_x: 0.05
+
+    DefaultLabel:
+        size_hint_x: 0.2
+        text: root.desc
+        halign: 'center'
+
+    DefaultLabel:
+        id: ac
+        size_hint_x: 0.09375
+        text: 'False'
+        halign: 'center'
+
+    DefaultLabel:
+        id: px
+        size_hint_x: 0.09375
+        text: '0.00'
+        halign: 'center'
+
+    DefaultLabel:
+        id: py
+        size_hint_x: 0.09375
+        text: '0.00'
+        halign: 'center'
+
+    DefaultLabel:
+        id: pz
+        size_hint_x: 0.09375
+        text: '0.00'
+        halign: 'center'
+
+    DefaultLabel:
+        id: qx
+        size_hint_x: 0.09375
+        text: '0.00'
+        halign: 'center'
+
+    DefaultLabel:
+        id: qy
+        size_hint_x: 0.09375
+        text: '0.00'
+        halign: 'center'
+
+    DefaultLabel:
+        id: qz
+        size_hint_x: 0.09375
+        text: '0.00'
+        halign: 'center'
+
+    DefaultLabel:
+        id: qw
+        size_hint_x: 0.09375
+        text: '1.00'
+        halign: 'center'
+
+    DefaultLabel:
+        size_hint_x: 0.05
+
+<TransformInput@BoxLayout>:
+    desc: ''
+    disable: False
+    tx: tx
+    ty: ty
+    tz: tz
+    spacing: 5
+    size_hint_y: None
+    height: self.minimum_height * 1.5
+
+    DefaultLabel:
+        size_hint_x: 0.4
+        text: root.desc
+
+    DefaultInput:
+        id: tx
+        size_hint_x: 0.2
+        disabled: root.disable
+
+    DefaultInput:
+        id: ty
+        size_hint_x: 0.2
+        disabled: root.disable
+
+    DefaultInput:
+        id: tz
+        size_hint_x: 0.2
+        disabled: root.disable
+
+<SegmentSlider@BoxLayout>:
+    desc: ''
+    disable: False
+    val: 0
+    min_val: 0
+    max_val: 1.2
+    slider: slider
+    spacing: 5
+    size_hint_y: None
+    height: self.minimum_height * 1.5
+
+    DefaultLabel:
+        size_hint_x: 0.45
+        text: root.desc
+
+    DefaultSlider:
+        id: slider
+        size_hint_x: 0.4
+        value: root.val
+        min: root.min_val
+        max: root.max_val
+        disabled: root.disable
+
+    DefaultLabel:
+        size_hint_x: 0.05
+        text: '{:.2f}'.format(slider.value)
+
+    Button:
+        size_hint_x: 0.05
+        text: '-'
+        disabled: root.disable
+        on_release: 
+            min = slider.min
+            max = slider.max
+            step = slider.step
+            value = round(slider.value, 2)
+            if value > min and value <= max: slider.value -= step
+
+    Button:
+        size_hint_x: 0.05
+        text: '+'
+        disabled: root.disable
+        on_release: 
+            min = slider.min
+            max = slider.max
+            step = slider.step
+            value = round(slider.value, 2)
+            if value >= min and value < max: slider.value += step
+
+<OffsetSlider@BoxLayout>:
+    desc: ''
+    disable: False
+    slider1: slider1
+    slider2: slider2
+    spacing: 5
+    size_hint_y: None
+    height: self.minimum_height * 1.5
+
+    DefaultLabel:
+        size_hint_x: 0.2
+        text: root.desc
+
+    DefaultSlider:
+        id: slider1
+        size_hint_x: 0.25
+        min: -0.5
+        max: 0.5
+        disabled: root.disable
+
+    DefaultLabel:
+        size_hint_x: 0.05
+        text: '{:.2f}'.format(slider1.value)
+
+    Button:
+        size_hint_x: 0.05
+        text: '-'
+        disabled: root.disable
+        on_release: 
+            min = slider1.min
+            max = slider1.max
+            step = slider1.step
+            value = round(slider1.value, 2)
+            if value > min and value <= max: slider1.value -= step
+
+    Button:
+        size_hint_x: 0.05
+        text: '+'
+        disabled: root.disable
+        on_release: 
+            min = slider1.min
+            max = slider1.max
+            step = slider1.step
+            value = round(slider1.value, 2)
+            if value >= min and value < max: slider1.value += step
+
+    DefaultSlider:
+        id: slider2
+        size_hint_x: 0.25
+        min: -0.5
+        max: 0.5
+        disabled: root.disable
+
+    DefaultLabel:
+        size_hint_x: 0.05
+        text: '{:.2f}'.format(slider2.value)
+
+    Button:
+        size_hint_x: 0.05
+        text: '-'
+        disabled: root.disable
+        on_release: 
+            min = slider2.min
+            max = slider2.max
+            step = slider2.step
+            value = round(slider2.value, 2)
+            if value > min and value <= max: slider2.value -= step
+
+    Button:
+        size_hint_x: 0.05
+        text: '+'
+        disabled: root.disable
+        on_release: 
+            min = slider2.min
+            max = slider2.max
+            step = slider2.step
+            value = round(slider2.value, 2)
+            if value >= min and value < max: slider2.value += step
+
+<OnOffSwitch@BoxLayout>:
+    desc: ''
+    switch: switch
+    spacing: 5
+    size_hint_y: None
+    height: self.minimum_height * 1.5
+
+    DefaultLabel:
+        size_hint_x: 0.8
+        text: root.desc
+
+    Switch:
+        id: switch
+        size_hint_x: 0.2
+        active: False
+
+<ScaleInfo@BoxLayout>:
+    desc: ''
+    val: 0
+    spacing: 5
+    size_hint_y: None
+    height: self.minimum_height * 1.5
+
+    DefaultLabel:
+        text: root.desc
+
+    DefaultLabel:
+        text: str('{:.2f} m'.format(root.val))
+        text_size: self.size
+        halign: 'left'
+
+<DefaultScroll@ScrollView>:
+    effect_cls: 'ScrollEffect'
+    do_scroll_x: False
+    do_scroll_y: True
+    bar_inactive_color: self.bar_color
+    bar_width: 20
+    scroll_type: ['bars', 'content']
+	scroll_timeout: 100
+	scroll_distance: 10
+
+<DefaultVBox@BoxLayout>:
+    orientation: 'vertical'
+    spacing: 5
+    size_hint_y: None
+    height: self.minimum_height
+
+<DefaultHBox@BoxLayout>:
+    orientation: 'horizontal'
+    spacing: 5
+    size_hint_y: None
+    height: self.minimum_height
+
+<DefaultLabel@Label>:
+    markup: True
+    halign: 'center'
+    font_size: '15sp'
+    size_hint_y: None
+    height: self.texture_size[1]
+    pos_hint: {'center_y': 0.5}
+
+<DefaultInput@TextInput>:
+    text: '0'
+    font_size: '15sp'
+	multiline: False
+	write_tab: False
+	input_filter: "float"
+    on_focus: app.textinput_focus(args)
+
+<DefaultSlider@Slider>:
+    min: 0
+	max: 1.2
+	step: 0.01
+	value: 0
+
+TabbedPanel:
+	do_default_tab: False
+    tab_width: (self.size[0] - self.padding[0] * 6)/6
+    on_current_tab: app.onTabChange(self.current_tab)
+
+    TabbedPanelItem:
+        text: 'Devices'
+
+        BoxLayout:
+            orientation: 'vertical'
+            spacing: 5
+
+            Label:
+                id: steam_status
+                size_hint_y: 0.05
+                text: 'SteamVR offline'
+
+            BoxLayout:
+                id: layout_ref
+                size_hint_y: 0.1
+				padding: [0, 0, 20, 0]
+
+                Label:
+                    size_hint_x: 0.2
+                    text: '[b]MAC[/b]'
+                    halign: 'center'
+					markup: True
+
+                Label:
+                    size_hint_x: 0.175
+                    text: '[b]IP[/b]'
+                    halign: 'center'
+					markup: True
+
+                Label:
+                    size_hint_x: 0.075
+                    text: '[b]Battery\nV[/b]'
+                    halign: 'center'
+					markup: True
+
+                Label:
+                    size_hint_x: 0.075
+                    text: '[b]Battery\n%[/b]'
+                    halign: 'center'
+					markup: True
+
+                Label:
+                    size_hint_x: 0.075
+                    text: '[b]IMU\nMode[/b]'
+                    halign: 'center'
+					markup: True
+
+                Label:
+                    size_hint_x: 0.075
+                    text: '[b]IMU\nAccuracy[/b]'
+                    halign: 'center'
+					markup: True
+
+                Label:
+                    size_hint_x: 0.0875
+                    text: '[b]WiFi TX\nPower\ndBm[/b]'
+                    halign: 'center'
+					markup: True
+
+                Label:
+                    size_hint_x: 0.0875
+                    text: '[b]WiFi\nPower\nSaving[/b]'
+                    halign: 'center'
+					markup: True
+
+                Label:
+                    size_hint_x: 0.15
+                    text: '[b]Role[/b]'
+                    halign: 'center'
+					markup: True
+
+            DefaultScroll:
+				size_hint_y: 0.75
+				
+				BoxLayout:
+					id: stack_list
+					orientation: 'vertical'
+					size_hint_y: None
+					height: self.minimum_height
+					padding: [0, 0, 20, 0]
+					
+            BoxLayout:
+                size_hint_y: 0.1
+
+                DefaultLabel:
+                    size_hint_x: 0.4
+
+                Button:
+                    id: calibrate_imu_button
+                    size_hint_x: 0.2
+                    text: 'Calibrate'
+                    on_release: app.calibrate_imu()
+
+                DefaultLabel:
+                    size_hint_x: 0.4
+
+    TabbedPanelItem:
+        text: 'Tracker Data'
+
+        BoxLayout:
+            orientation: 'vertical'
+
+            BoxLayout:
+                size_hint_y: 0.1
+
+                Label:
+                    size_hint_x: 0.05
+
+                Label:
+                    size_hint_x: 0.2
+                    text: '[b]Tracker[/b]'
+                    halign: 'center'
+					markup: True
+
+                Label:
+                    size_hint_x: 0.09375
+                    text: '[b]Streaming[/b]'
+                    halign: 'center'
+					markup: True
+
+                Label:
+                    size_hint_x: 0.09375
+                    text: '[b]Px[/b]'
+                    halign: 'center'
+					markup: True
+
+                Label:
+                    size_hint_x: 0.09375
+                    text: '[b]Py[/b]'
+                    halign: 'center'
+					markup: True
+
+                Label:
+                    size_hint_x: 0.09375
+                    text: '[b]Pz[/b]'
+                    halign: 'center'
+					markup: True
+
+                Label:
+                    size_hint_x: 0.09375
+                    text: '[b]Qx[/b]'
+                    halign: 'center'
+					markup: True
+
+                Label:
+                    size_hint_x: 0.09375
+                    text: '[b]Qy[/b]'
+                    halign: 'center'
+					markup: True
+
+                Label:
+                    size_hint_x: 0.09375
+                    text: '[b]Qz[/b]'
+                    halign: 'center'
+					markup: True
+
+                Label:
+                    size_hint_x: 0.09375
+                    text: '[b]Qw[/b]'
+                    halign: 'center'
+					markup: True
+
+                Label:
+                    size_hint_x: 0.05
+
+            BoxLayout:
+                size_hint_y: 0.9
+                orientation: 'vertical'
+
+                TrackerView:
+                    id: tracker_1
+                    desc: 'Left Foot'
+
+                TrackerView:
+                    id: tracker_2
+                    desc: 'Right Foot'
+
+                TrackerView:
+                    id: tracker_3
+                    desc: 'Left Lower Leg'
+
+                TrackerView:
+                    id: tracker_4
+                    desc: 'Right Lower Leg'
+
+                TrackerView:
+                    id: tracker_5
+                    desc: 'Left Thigh'
+
+                TrackerView:
+                    id: tracker_6
+                    desc: 'Right Thigh'
+
+                TrackerView:
+                    id: tracker_7
+                    desc: 'Waist'
+
+                TrackerView:
+                    id: tracker_8
+                    desc: 'Chest'
+
+                TrackerView:
+                    id: tracker_9
+                    desc: 'Left Shoulder'
+
+                TrackerView:
+                    id: tracker_10
+                    desc: 'Right Shoulder'
+
+                TrackerView:
+                    id: tracker_11
+                    desc: 'Left Upper Arm'
+
+                TrackerView:
+                    id: tracker_12
+                    desc: 'Right Upper Arm'
+
+    TabbedPanelItem:
+        text: 'Device settings'
+
+        BoxLayout:
+            orientation: 'vertical'
+            spacing: 5
+
+            BoxLayout:
+                size_hint_y: 0.1
+				padding: [0, 0, 20, 0]
+
+                Label:
+                    size_hint_x: 0.2
+                    text: '[b]MAC[/b]'
+                    halign: 'center'
+					markup: True
+
+                Label:
+                    size_hint_x: 0.1
+                    text: '[b]Connect[/b]'
+                    halign: 'center'
+					markup: True
+
+                Label:
+                    size_hint_x: 0.35
+                    text: '[b]IMU Mode[/b]'
+                    halign: 'center'
+					markup: True
+
+                Label:
+                    size_hint_x: 0.1
+                    text: '[b]WiFi TX\nPower\ndBm[/b]'
+                    halign: 'center'
+					markup: True
+
+                Label:
+                    size_hint_x: 0.1
+                    text: '[b]WiFi\nPower\nSaving[/b]'
+                    halign: 'center'
+					markup: True
+
+                Label:
+                    size_hint_x: 0.15
+                    text: '[b]Role[/b]'
+                    halign: 'center'
+					markup: True
+
+            DefaultScroll:
+                size_hint_y: 0.9
+
+                BoxLayout:
+					id: stack_role
+					orientation: 'vertical'
+					size_hint_y: None
+					height: self.minimum_height
+					padding: [0, 0, 20, 0]
+
+    TabbedPanelItem:
+        text: 'Main settings'
+
+        DefaultScroll:
+
+            DefaultVBox:
+                padding: [0, 0, 20, 20]
+
+                DefaultHBox:
+
+                    Button:
+                        size_hint_y: None
+                        height: self.texture_size[1] * 2
+                        text: 'Save settings'
+                        on_release: app.save_settings()
+
+                    Button:
+                        size_hint_y: None
+                        height: self.texture_size[1] * 2
+                        text: 'Load settings'
+                        on_release: app.load_settings()
+
+                DefaultLabel:
+                    id: save_load_text
+                    text: ' '
+                
+                DefaultLabel:
+                    padding_y: 10
+                    font_size: '20sp'
+                    text: '[b]Tracker frame intrinsic XYZ rotation to \ndriver frame (X: right, Y: up, Z: back) when standing in T-pose in degree[/b]'
+
+                DefaultHBox:
+
+                    DefaultLabel:
+                        size_hint_x: 0.4
+                        text: '[b]Trackers[/b]'
+
+                    DefaultLabel:
+                        size_hint_x: 0.2
+                        text: '[b]X[/b]'
+
+                    DefaultLabel:
+                        size_hint_x: 0.2
+                        text: '[b]Y[/b]'
+
+                    DefaultLabel:
+                        size_hint_x: 0.2
+                        text: '[b]Z[/b]'
+
+                TransformInput:
+                    id: lfoot_t
+                    desc: 'Left foot'
+
+                TransformInput:
+                    id: rfoot_t
+                    desc: 'Right foot'
+
+                TransformInput:
+                    id: lshin_t
+                    desc: 'Left lower leg'
+
+                TransformInput:
+                    id: rshin_t
+                    desc: 'Right lower leg'
+
+                TransformInput:
+                    id: lthigh_t
+                    desc: 'Left thigh'
+
+                TransformInput:
+                    id: rthigh_t
+                    desc: 'Right thigh'
+
+                TransformInput:
+                    id: waist_t
+                    desc: 'Waist'
+
+                TransformInput:
+                    id: chest_t
+                    desc: 'Chest'
+
+                TransformInput:
+                    id: lshoulder_t
+                    desc: 'Left shoulder'
+
+                TransformInput:
+                    id: rshoulder_t
+                    desc: 'Right shoulder'
+
+                TransformInput:
+                    id: lupperarm_t
+                    desc: 'Left upper arm'
+
+                TransformInput:
+                    id: rupperarm_t
+                    desc: 'Right upper arm'
+
+                DefaultHBox:
+                    
+                    DefaultLabel:
+                        size_hint_x: 0.9
+                        padding_y: 10
+                        font_size: '20sp'
+                        text: '[b]Body segment length in meter[/b]'
+
+                    Button:
+                        size_hint_x: 0.1
+                        text: 'Help'
+                        on_release: app.show_popup()
+
+                SegmentSlider:
+                    id: shin_h
+                    desc: 'Foot to knee (lower leg)'
+                    val: 0.5
+
+                SegmentSlider:
+                    id: thigh_h
+                    desc: 'Knee to hip (thigh)'
+                    val: 0.4
+
+                SegmentSlider:
+                    id: lback_h
+                    desc: 'Hip center to mid back (lower back)'
+                    val: 0.25
+
+                SegmentSlider:
+                    id: uback_h
+                    desc: 'Mid back to neck (upper back)'
+                    val: 0.35
+
+                SegmentSlider:
+                    id: head_h
+                    desc: 'Neck to headset (head)'
+                    val: 0.2
+
+                SegmentSlider:
+                    id: shoulder_h
+                    desc: 'Neck to shoulder center'
+                    val: 0.1
+
+                SegmentSlider:
+                    id: hip_width_h
+                    desc: 'Hip width'
+                    val: 0.3
+
+                SegmentSlider:
+                    id: shoulder_width_h
+                    desc: 'Shoulder width'
+                    val: 0.3
+
+                DefaultLabel:
+                    padding_y: 10
+                    font_size: '20sp'
+                    text: '[b]Body segment scaling[/b]'
+
+                SegmentSlider:
+                    id: vscale
+                    desc: 'Vertical scaling'
+                    val: 1
+                    min_val: 0
+                    max_val: 3
+
+                SegmentSlider:
+                    id: hscale
+                    desc: 'Horiontal scaling'
+                    val: 1
+                    min_val: 0
+                    max_val: 3
+
+                ScaleInfo:
+                    desc: shin_h.desc
+                    val: shin_h.slider.value * vscale.slider.value
+
+                ScaleInfo:
+                    desc: thigh_h.desc
+                    val: thigh_h.slider.value * vscale.slider.value
+
+                ScaleInfo:
+                    desc: lback_h.desc
+                    val: lback_h.slider.value * vscale.slider.value
+
+                ScaleInfo:
+                    desc: uback_h.desc
+                    val: uback_h.slider.value * vscale.slider.value
+
+                ScaleInfo:
+                    desc: head_h.desc
+                    val: head_h.slider.value * vscale.slider.value
+
+                ScaleInfo:
+                    desc: shoulder_h.desc
+                    val: shoulder_h.slider.value * vscale.slider.value
+
+                ScaleInfo:
+                    desc: hip_width_h.desc
+                    val: hip_width_h.slider.value * hscale.slider.value
+
+                ScaleInfo:
+                    desc: shoulder_width_h.desc
+                    val: shoulder_width_h.slider.value * hscale.slider.value
+
+                ScaleInfo:
+                    desc: '[b]Total height[/b]'
+                    val: 
+                        shin_h.slider.value * vscale.slider.value + \
+                        thigh_h.slider.value * vscale.slider.value + \
+                        lback_h.slider.value * vscale.slider.value + \
+                        uback_h.slider.value * vscale.slider.value + \
+                        head_h.slider.value * vscale.slider.value
+
+                BoxLayout:
+                    spacing: 5
+                    size_hint_y: None
+                    height: self.minimum_height * 1.5
+
+                    DefaultLabel:
+                        size_hint_x: 0.5
+                        text: '[b]VR headset height[/b]'
+
+                    DefaultLabel:
+                        id: headset_height
+                        size_hint_x: 0.15
+                        text: ''
+                        text_size: self.size
+                        halign: 'left'
+
+                    Button:
+                        size_hint_x: 0.35
+                        text: 'Measure'
+                        on_release: app.measure_height()
+
+                DefaultLabel:
+                    padding_y: 10
+                    font_size: '20sp'
+                    text: '[b]Headset position offset when standing in T-pose in meter[/b]'
+
+                DefaultHBox:
+
+                    DefaultLabel:
+                        size_hint_x: 0.2
+                        text: '[b]Trackers[/b]'
+
+                    DefaultLabel:
+                        size_hint_x: 0.4
+                        text: '[b]Left <--------------------> Right[/b]'
+
+                    DefaultLabel:
+                        size_hint_x: 0.4
+                        text: '[b]Front <--------------------> Back[/b]'
+
+                OffsetSlider:
+                    id: head_o
+                    desc: 'Headset'
+
+                DefaultLabel:
+                    padding_y: 10
+                    font_size: '20sp'
+                    text: '[b]SteamVR tracker device activation[/b]'
+
+                DefaultLabel:
+                    text: '*If too many tracker devices are activated in SteamVR, \nit might cause controller tracking problem in some SteamVR game/program.'
+
+                DefaultLabel:
+                    text: '**SteamVR restart is required to take effect upon changing device activation settings.'
+
+                OnOffSwitch:
+                    id: feet_en_check
+                    desc: 'Feet'
+
+                OnOffSwitch:
+                    id: shin_en_check
+                    desc: 'Lower leg'
+
+                OnOffSwitch:
+                    id: thigh_en_check
+                    desc: 'Thigh'
+
+                OnOffSwitch:
+                    id: waist_en_check
+                    desc: 'Waist'
+
+                OnOffSwitch:
+                    id: chest_en_check
+                    desc: 'Chest'
+
+                OnOffSwitch:
+                    id: shoulder_en_check
+                    desc: 'Shoulder'
+
+                OnOffSwitch:
+                    id: upperarm_en_check
+                    desc: 'Upper arm'
+
+                DefaultLabel:
+                    padding_y: 10
+                    font_size: '20sp'
+                    text: '[b]Additional settings[/b]'
+
+                SegmentSlider:
+                    id: floor_offset
+                    desc: 'Tracker floor level offset in meter\n(Min Y value to prevent tracker clipping through)'
+                    val: 0.0
+                    min_val: -3.0
+                    max_val: 3.0
+
+                OnOffSwitch:
+                    id: override_feet_en_check
+                    desc: 'Use lower leg tracker data as SteamVR feet tracker\n(SteamVR feet tracker device must be activated)'
+
+    TabbedPanelItem:
+        text: 'Tracker virtual\nposition settings'
+
+        DefaultScroll:
+
+            DefaultVBox:
+                padding: [0, 0, 20, 20]
+
+                DefaultHBox:
+                    
+                    DefaultLabel:
+                        size_hint_x: 0.9
+                        padding_y: 10
+                        font_size: '20sp'
+                        text: '[b]Tracker virtual position from joint in meter[/b]'
+
+                    Button:
+                        size_hint_x: 0.1
+                        text: 'Help'
+                        on_release: app.show_popup()
+
+                SegmentSlider:
+                    id: foot_sensor_h
+                    desc: 'Foot tracker from ankle joint'
+                    val: 0.05
+                    min_val: -1.2
+
+                SegmentSlider:
+                    id: shin_sensor_h
+                    desc: 'Lower leg tracker from knee joint'
+                    val: 0.2
+                    min_val: -1.2
+
+                SegmentSlider:
+                    id: thigh_sensor_h
+                    desc: 'Thigh tracker from hip joint'
+                    val: 0.2
+                    min_val: -1.2
+
+                SegmentSlider:
+                    id: waist_sensor_h
+                    desc: 'Waist tracker from hip center joint'
+                    val: 0.2
+                    min_val: -1.2
+
+                SegmentSlider:
+                    id: chest_sensor_h
+                    desc: 'Chest tracker from mid back joint'
+                    val: 0.2
+                    min_val: -1.2
+
+                SegmentSlider:
+                    id: shoulder_sensor_h
+                    desc: 'Shoulder tracker from shoulder center joint'
+                    val: 0.1
+                    min_val: -1.2
+
+                SegmentSlider:
+                    id: upperarm_sensor_h
+                    desc: 'Upper arm tracker from shoulder joint'
+                    val: 0.15
+                    min_val: -1.2
+
+                DefaultLabel:
+                    padding_y: 10
+                    font_size: '20sp'
+                    text: '[b]Tracker virtual position offset when standing in T-pose in meter[/b]'
+
+                DefaultHBox:
+
+                    DefaultLabel:
+                        size_hint_x: 0.2
+                        text: '[b]Trackers[/b]'
+
+                    DefaultLabel:
+                        size_hint_x: 0.4
+                        text: '[b]Left <--------------------> Right[/b]'
+
+                    DefaultLabel:
+                        size_hint_x: 0.4
+                        text: '[b]Front <--------------------> Back[/b]'
+
+                OffsetSlider:
+                    id: lshin_o
+                    desc: 'Left lower leg'
+
+                OffsetSlider:
+                    id: rshin_o
+                    desc: 'Right lower leg'
+
+                OffsetSlider:
+                    id: lthigh_o
+                    desc: 'Left thigh'
+
+                OffsetSlider:
+                    id: rthigh_o
+                    desc: 'Right thigh'
+
+                OffsetSlider:
+                    id: waist_o
+                    desc: 'Waist'
+
+                OffsetSlider:
+                    id: chest_o
+                    desc: 'Chest'
+
+                DefaultHBox:
+                    padding: [0, 20, 0, 0]
+
+                    DefaultLabel:
+                        size_hint_x: 0.2
+                        text: '[b]Trackers[/b]'
+
+                    DefaultLabel:
+                        size_hint_x: 0.4
+                        text: '[b]Left <--------------------> Right[/b]'
+
+                    DefaultLabel:
+                        size_hint_x: 0.4
+                        text: '[b]Down <--------------------> Up[/b]'
+
+                OffsetSlider:
+                    id: lfoot_o
+                    desc: 'Left foot'
+
+                OffsetSlider:
+                    id: rfoot_o
+                    desc: 'Right foot'
+
+                DefaultHBox:
+                    padding: [0, 20, 0, 0]
+
+                    DefaultLabel:
+                        size_hint_x: 0.2
+                        text: '[b]Trackers[/b]'
+
+                    DefaultLabel:
+                        size_hint_x: 0.4
+                        text: '[b]Front <--------------------> Back[/b]'
+
+                    DefaultLabel:
+                        size_hint_x: 0.4
+                        text: '[b]Down <--------------------> Up[/b]'
+
+                OffsetSlider:
+                    id: lshoulder_o
+                    desc: 'Left shoulder'
+                
+                OffsetSlider:
+                    id: rshoulder_o
+                    desc: 'Right shoulder'
+
+                OffsetSlider:
+                    id: lupperarm_o
+                    desc: 'Left upper arm'
+
+                OffsetSlider:
+                    id: rupperarm_o
+                    desc: 'Right upper arm'
+
+    TabbedPanelItem:
+        text: 'WiFi settings'
+
+        BoxLayout:
+            orientation: 'vertical'
+
+            BoxLayout:
+                size_hint_y: 0.3
+
+            DefaultHBox:
+                height: self.minimum_height * 2
+
+                Label:
+                    size_hint_x: 0.25
+
+                DefaultLabel:
+                    size_hint_x: 0.2
+                    text: 'COM port'
+
+                Spinner:
+					id: com_port_list
+					size_hint_x: 0.3
+
+                Label:
+                    size_hint_x: 0.25
+
+            DefaultHBox:
+                height: self.minimum_height * 2
+
+                Label:
+                    size_hint_x: 0.25
+
+                DefaultLabel:
+                    size_hint_x: 0.2
+                    text: 'WiFi SSID'
+
+                DefaultInput:
+                    id: wifi_ssid
+                    size_hint_x: 0.3
+                    text: ''
+                    input_filter: None
+
+                Label:
+                    size_hint_x: 0.25
+
+            DefaultHBox:
+                height: self.minimum_height * 2
+
+                Label:
+                    size_hint_x: 0.25
+
+                DefaultLabel:
+                    size_hint_x: 0.2
+                    text: 'WiFi password'
+
+                DefaultInput:
+                    id: wifi_password
+                    size_hint_x: 0.3
+                    text: ''
+                    input_filter: None
+					password: True
+
+                Label:
+                    size_hint_x: 0.25
+
+            DefaultHBox:
+                height: self.minimum_height * 2
+
+                Label:
+                    size_hint_x: 0.4
+
+                Button:
+					id: wifi_configure
+					size_hint_x: 0.2
+                    size_hint_y: None
+                    height: self.texture_size[1] * 2
+					text: 'Configure'
+					on_release: app.configure_wifi()
+
+                Label:
+                    size_hint_x: 0.4
+
+            DefaultHBox:
+                height: self.minimum_height * 2
+
+                DefaultLabel:
+                    id: wifi_configure_status
+                    text: 'WiFi setup'
+
+            BoxLayout:
+                size_hint_y: 0.7
