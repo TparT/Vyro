@@ -76,6 +76,19 @@ const float LSB_COMP_PER_TEMP_Z_MAP[13] = {
 const int i2c_addr_default = 0x69;
 const int i2c_addr_jumper = 0x68;
 
+#define LFOOT 1
+#define RFOOT 2
+#define LSHIN 3
+#define RSHIN 4
+#define LTHIGH 5
+#define RTHIGH 6
+#define WAIST 7
+#define CHEST 8
+#define LSHOULDER 9
+#define RSHOULDER 10
+#define LUPPERARM 11
+#define RUPPERARM 12
+
 struct VyroImuData {
 
   float q[4] { 1.0f, 0.0f, 0.0f, 0.0f };
@@ -327,9 +340,22 @@ class IMUsManager {
 };
 */
 
+//        payload.x = map(quaternion_main.x);
+//        payload.y = map(quaternion_main.y);
+//        payload.z = map(quaternion_main.z);
+//        payload.w = map(quaternion_main.w);
+
 struct TrackerData {
   uint8_t id = 0;
-  Quaternion quat;
+  
+  int16_t x = 0;
+  int16_t y = 0;
+  int16_t z = 0;
+  int16_t w = 32767;
+
+  void setQuat(int16_t qx, int16_t qy, int16_t qz, int16_t qw = 32767) {
+    x = qx; y = qy; z = qz; w = qw;
+  }
 };
 
 class Vyro {
@@ -410,11 +436,13 @@ struct __attribute__((packed)) Payload {
   uint8_t footer = (uint8_t)'i';
 } payload;
 
-struct __attribute__((packed)) PayloadVyro {
+#pragma pack(push, 1)
+struct PayloadVyro {
   uint8_t header = (uint8_t)'I';
-  TrackerData trackers[12]; // Trackers data
+  TrackerData trackers[13]; // Trackers data
   uint8_t footer = (uint8_t)'i';
 } payloadvyro;
+#pragma pack(pop)
 
 uint32_t last_broadcast;
 uint32_t last_ping;
@@ -484,40 +512,62 @@ int16_t map(float x, float in_min = -1, float in_max = 1, float out_min = -32767
 void sendUDP(bool extend) {
   if ((driverPort != 0) && ((main_id != 0) || (extended_id != 0))) {
     udp.beginPacket(udpAddress, driverPort);
-    if (extend) {
-      udp.write((uint8_t*)&payloadext, sizeof(payloadext));
-    }
-    else {
-      udp.write((uint8_t*)&payload, sizeof(payload));
-    }
+
+    udp.write((uint8_t*)&payloadvyro, sizeof(payloadvyro));
+    
+//    if (extend) {
+//      udp.write((uint8_t*)&payloadext, sizeof(payloadext));
+//    }
+//    else {
+//      udp.write((uint8_t*)&payload, sizeof(payload));
+//    }
 
     if (udp.endPacket()) {
       last_udp_check = millis();
     }
-
-    DEBUG_PRINT.print("main,");
-    DEBUG_PRINT.print(payload.id);
-    DEBUG_PRINT.print(",");
-    DEBUG_PRINT.print(payload.x);
-    DEBUG_PRINT.print(",");
-    DEBUG_PRINT.print(payload.y);
-    DEBUG_PRINT.print(",");
-    DEBUG_PRINT.print(payload.z);
-    DEBUG_PRINT.print(",");
-    DEBUG_PRINT.print(payload.w);
+    DEBUG_PRINT.println("Vyro Payload size = ");
+    DEBUG_PRINT.print(sizeof(payloadvyro));
     DEBUG_PRINT.println();
+    for (int i = 1; i < 13; i++) {
+      TrackerData d = payloadvyro.trackers[i];
+      
+      if (d.id != 0) {
+        DEBUG_PRINT.print(d.id);
+        DEBUG_PRINT.print(", ");
+        DEBUG_PRINT.print(d.x);
+        DEBUG_PRINT.print(", ");
+        DEBUG_PRINT.print(d.y);
+        DEBUG_PRINT.print(", ");
+        DEBUG_PRINT.print(d.z);
+        DEBUG_PRINT.print(", ");
+        DEBUG_PRINT.print(d.w);
+        DEBUG_PRINT.println();
+      }
+    }
 
-    DEBUG_PRINT.print("extended,");
-    DEBUG_PRINT.print(payloadext.id_ext);
-    DEBUG_PRINT.print(",");
-    DEBUG_PRINT.print(payloadext.x_ext);
-    DEBUG_PRINT.print(",");
-    DEBUG_PRINT.print(payloadext.y_ext);
-    DEBUG_PRINT.print(",");
-    DEBUG_PRINT.print(payloadext.z_ext);
-    DEBUG_PRINT.print(",");
-    DEBUG_PRINT.print(payloadext.w_ext);
-    DEBUG_PRINT.println();
+//    DEBUG_PRINT.print("main,");
+//    DEBUG_PRINT.print(payload.id);
+//    DEBUG_PRINT.print(",");
+//    DEBUG_PRINT.print(payload.x);
+//    DEBUG_PRINT.print(",");
+//    DEBUG_PRINT.print(payload.y);
+//    DEBUG_PRINT.print(",");
+//    DEBUG_PRINT.print(payload.z);
+//    DEBUG_PRINT.print(",");
+//    DEBUG_PRINT.print(payload.w);
+//    DEBUG_PRINT.println();
+//
+//    DEBUG_PRINT.print("extended,");
+//    DEBUG_PRINT.print(payloadext.id_ext);
+//    DEBUG_PRINT.print(",");
+//    DEBUG_PRINT.print(payloadext.x_ext);
+//    DEBUG_PRINT.print(",");
+//    DEBUG_PRINT.print(payloadext.y_ext);
+//    DEBUG_PRINT.print(",");
+//    DEBUG_PRINT.print(payloadext.z_ext);
+//    DEBUG_PRINT.print(",");
+//    DEBUG_PRINT.print(payloadext.w_ext);
+//    DEBUG_PRINT.println();
   }
 }
 
@@ -587,6 +637,9 @@ Vyro vyro;
 
 void setup() {
 
+  main_id = LUPPERARM;
+  extended_id = LSHOULDER;
+  
   Serial.begin(115200);
   while (!Serial);    // wait for the serial port to open
   DEBUG_PRINT.println("Serial set up!");
@@ -677,6 +730,9 @@ void setup() {
   vyro = Vyro();
   vyro.trackers.initAllChannels();
 
+  payloadvyro.trackers[LUPPERARM].id = LUPPERARM;
+  payloadvyro.trackers[LSHOULDER].id = LSHOULDER;
+
   DEBUG_PRINT.println("All channels are supposed to be initialized!");
 
   extended_imu_found = vyro.trackers[6]->extend;
@@ -725,8 +781,8 @@ void loop() {
       if (ack.reply == 200 && ack.header == (uint8_t)'I' && ack.footer == (uint8_t)'i') {
         recv_watchdog = millis();
         udpAddress = udp.remoteIP();
-        main_id = ack.id;
-        extended_id = ack.id_ext;
+        //main_id = ack.id;
+        //extended_id = ack.id_ext;
         setIMUMode(ack.mode, ack.mode_ext);
         setWiFiPower(ack.wifi_power);
         setWiFiSleep(ack.wifi_sleep);
@@ -763,39 +819,51 @@ void loop() {
 
       Quaternion quaternion_main = vyro.trackers[6]->imu1.getQuaternion();
 
-      if (vyro.trackers[6]->imu1.currentData.q != NULL) {
-        last_main_imu_check = millis();
-        first_read = true;
-        payload.id = main_id;
-        payload.x = map(quaternion_main.x);
-        payload.y = map(quaternion_main.y);
-        payload.z = map(quaternion_main.z);
-        payload.w = map(quaternion_main.w);
-
-        payloadext.id = main_id;
-        payloadext.x = map(quaternion_main.x);
-        payloadext.y = map(quaternion_main.y);
-        payloadext.z = map(quaternion_main.z);
-        payloadext.w = map(quaternion_main.w);
-
-        //ping.accuracy = myIMU.getQuatAccuracy();
-
-        sendUDP(extended_imu_found);
-      }
+      main_id = LUPPERARM;
+      //payloadvyro.trackers[main_id].quat = quaternion_main;
+      payloadvyro.trackers[main_id].setQuat(map(quaternion_main.x), map(quaternion_main.y), map(quaternion_main.z), map(quaternion_main.w));
 
       Quaternion quaternion_extend = vyro.trackers[6]->imu2.getQuaternion();
 
-      if (vyro.trackers[6]->imu2.currentData.q != NULL) {
-        last_extend_imu_check = millis();
-        first_read_ext = true;
-        payloadext.id_ext = extended_id;
-        payloadext.x_ext = map(quaternion_extend.x);
-        payloadext.y_ext = map(quaternion_extend.y);
-        payloadext.z_ext = map(quaternion_extend.z);
-        payloadext.w_ext = map(quaternion_extend.w);
+      extended_id = LSHOULDER;
+      //payloadvyro.trackers[extended_id].quat = quaternion_extend;
+      payloadvyro.trackers[extended_id].setQuat(map(quaternion_extend.x), map(quaternion_extend.y), map(quaternion_extend.z), map(quaternion_extend.w));
 
-        //ping.accuracy_ext = imu2.getQuatAccuracy();
-      }
+      sendUDP(extended_imu_found);
+
+//      if (vyro.trackers[6]->imu1.currentData.q != NULL) {
+        last_main_imu_check = millis();
+        first_read = true;
+//        payload.id = main_id;
+//        payload.x = map(quaternion_main.x);
+//        payload.y = map(quaternion_main.y);
+//        payload.z = map(quaternion_main.z);
+//        payload.w = map(quaternion_main.w);
+//
+//        payloadext.id = main_id;
+//        payloadext.x = map(quaternion_main.x);
+//        payloadext.y = map(quaternion_main.y);
+//        payloadext.z = map(quaternion_main.z);
+//        payloadext.w = map(quaternion_main.w);
+//
+//        //ping.accuracy = myIMU.getQuatAccuracy();
+//
+//        sendUDP(extended_imu_found);
+//      }
+//
+//      Quaternion quaternion_extend = vyro.trackers[6]->imu2.getQuaternion();
+//
+//      if (vyro.trackers[6]->imu2.currentData.q != NULL) {
+//        last_extend_imu_check = millis();
+//        first_read_ext = true;
+//        payloadext.id_ext = extended_id;
+//        payloadext.x_ext = map(quaternion_extend.x);
+//        payloadext.y_ext = map(quaternion_extend.y);
+//        payloadext.z_ext = map(quaternion_extend.z);
+//        payloadext.w_ext = map(quaternion_extend.w);
+//
+//        //ping.accuracy_ext = imu2.getQuatAccuracy();
+//      }
 
 
       if ((serverPort != 0) && (millis() - last_ping >= 1000)) {
